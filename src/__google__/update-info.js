@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { contactInfo } from '../about-me.js';
 
-async function getGithubUserInfo(username: string): Promise<any> {
+async function getGithubUserInfo(username) {
     try {
         const response = await axios.get(`https://api.github.com/users/${username}`);
         const { name, bio, email } = response.data;
 
         const socialLinks = bio.match(/https?:\/\/[^\s]+/g) || [];
-        const tg = socialLinks.filter((link: string | string[]) => link.includes('t.me'));
+        const tg = socialLinks.filter((link) => link.includes('t.me'));
         return { name, bio, email, tg };
     } catch (error) {
         console.error('Error fetching GitHub user info:', error);
@@ -15,10 +15,10 @@ async function getGithubUserInfo(username: string): Promise<any> {
     }
 }
 
-async function updateSheet(prNumber: string, status: string, duration: string, userInfo: any): Promise<void> {
-    if (status === 'failure' || contactInfo.bio.length < 50) {
-        return;
-    } 
+async function updateSheet(prNumber, status, duration, userInfo) {
+    // if (status === 'failure' || contactInfo.bio.length < 50) {
+        // return;
+    // } 
     
     try {
         await axios.post('http://164.90.212.8:3000/update-sheet', {

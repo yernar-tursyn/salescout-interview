@@ -29,7 +29,7 @@ async function updateSheet(prNumber: string, status: string, duration: string, u
     // } 
     const auth = new google.auth.GoogleAuth({
         credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS || ''),
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'], 
     });
 
     const sheets: sheets_v4.Sheets = google.sheets({ version: 'v4', auth });

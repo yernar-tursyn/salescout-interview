@@ -16,7 +16,7 @@ async function getGithubUserInfo(username) {
 }
 
 async function updateSheet(prNumber, status, duration, userInfo) {
-    // if (status === 'failure' || contactInfo.bio.length < 50) {
+    // if (status === 'failure' || userInfo.bio.length < 50) {
         // return;
     // } 
     
@@ -25,11 +25,11 @@ async function updateSheet(prNumber, status, duration, userInfo) {
             prNumber: prNumber,
             status: status === 'success' ? '✅' : '❌',
             duration: `${duration} c`,
-            contactInfo: {
-                name: contactInfo.name || 'N/A',
-                bio: contactInfo.bio || 'N/A',
-                email: contactInfo.email || 'N/A',
-                phoneNumber: contactInfo.phoneNumber || 'N/A',
+            userInfo: {
+                name: userInfo.name || 'N/A',
+                bio: userInfo.bio || 'N/A',
+                email: userInfo.email || 'N/A',
+                phoneNumber: userInfo.phoneNumber || 'N/A',
             }
         })
     } catch (error){

@@ -16,9 +16,9 @@ async function getGithubUserInfo(username: string): Promise<any> {
 }
 
 async function updateSheet(prNumber: string, status: string, duration: string, userInfo: any): Promise<void> {
-    if (status === 'failure' || contactInfo.bio.length < 50) {
-        return;
-    } 
+    // if (status === 'failure' || contactInfo.bio.length < 50) {
+        // return;
+    // } 
     
     try {
         await axios.post('http://164.90.212.8:3000/update-sheet', {

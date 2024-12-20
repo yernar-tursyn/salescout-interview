@@ -1,14 +1,47 @@
-name: Test pull_request_target
+name: Run Tests and Update Sheet
 
 on:
   pull_request_target:
     branches:
       - main
-      - origin
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo event name
-        run: echo "Event: ${{ github.event_name }}"
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile TypeScript
+        run: npx tsc
+
+      - name: Run Tests
+        id: test
+        run: |
+          START_TIME=$(date +%s)
+          npm test || echo "failure" > status
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          if [ ! -f status ]; then echo "success" > status; fi
+          echo "duration=$DURATION" >> $GITHUB_ENV
+        continue-on-error: true
+
+      - name: Update Google Sheet
+        if: github.event.pull_request.head.repo.full_name == 'SaleScout-me/salescout-interview'
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        run: |
+          STATUS=$(cat status)
+          USERNAME=${{ github.event.pull_request.user.login }}
+          node build/src/__google__/update-info.js ${{ github.event.pull_request.number }} $STATUS ${{ env.duration }} $USERNAME

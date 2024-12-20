@@ -3,4 +3,4 @@ export const contactInfo = {
     phoneNumber: '+77713011111', //Укажите здесь свой номер телефона
     email: 'yourmail@gmail.com', //Укажите здесь свой email
     bio: '' //Напишите сопроводительное письмо(от 50 символов!!!)
-}
+} 

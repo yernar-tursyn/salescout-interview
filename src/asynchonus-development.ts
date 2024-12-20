@@ -10,7 +10,7 @@
 // [
 // { data: { ... }, status: 200 },
 // { data: { ... }, status: 200 }
-// ]
+// ] 
 type RequestsResult = {
     data: any,
     status: number

@@ -4,16 +4,14 @@ on:
   pull_request:
     branches:
       - main
+      - origin
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR code
+      - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -25,7 +23,7 @@ jobs:
 
       - name: Compile TypeScript
         run: npx tsc
-
+ 
       - name: Run Tests
         id: test
         run: |
@@ -38,9 +36,6 @@ jobs:
         continue-on-error: true
 
       - name: Update Google Sheet
-        if: github.event.pull_request.head.repo.full_name == 'SaleScout-me/salescout-interview'
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: |
           STATUS=$(cat status)
           USERNAME=${{ github.event.pull_request.user.login }}

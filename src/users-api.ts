@@ -11,11 +11,17 @@ app.use(express.json());
 
 const users: { name: string }[] = [];
 
-app.post('/user', (req: Request, res: Response) => {
-    res.status(200).send();
+app.post('/user', (req: Request, res: Response): void => {
+    const { name } = req.body;
+    if (!name) {
+        res.status(400).json({ message: 'Name is required' });
+        return;
+    }
+    users.push({ name });
+    res.status(201).json({ message: 'User added successfully', user: { name } });
 });
 
-app.get('/users', (req: Request, res: Response) => {
+app.get('/users', (req: Request, res: Response): void => {
     res.status(200).json(users);
 });
 
@@ -25,3 +31,4 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 export default app;
+
